@@ -72,3 +72,4 @@ def eliminar_contactos(request, id):
         contacto.delete()
         return redirect('lista_contactos')
     return render(request, 'lista/eliminar_contactos.html', {'contactos': contacto})
+
