@@ -14,7 +14,7 @@
         <th class="py-2 px-4 border-b">Correo</th>
         <th class="py-2 px-4 border-b">Teléfono</th>
         <th class="py-2 px-4 border-b">Dirección</th>
-        <th class="py-2 px-4 border-b">Acciones</th>
+        <th class="py-2 px-4 border-b">Editar</th>
       </tr>
     </thead>
     <tbody>
@@ -26,9 +26,9 @@
           <td class="py-2 px-4 border-b">{{ contacto.direccion }}</td>
           <td class="py-2 px-4 border-b">
             <menu class="flex flex-row gap-2 items-center text-white">
-              <a href="{% url 'detalle_contactos' contactos.id %}" class="bg-blue-500 hover:scale-105 transition-all ease-in px-2 py-1 rounded">Ver</a>
-              <a href="{% url 'editar_contactos' contactos.id %}" class="bg-yellow-500 hover:scale-105 transition-all ease-in px-2 py-1 rounded">Editar</a>
-              <a href="{% url 'eliminar_contactos' contactos.id %}" class="bg-red-500 hover:scale-105 transition-all ease-in px-2 py-1 rounded">Eliminar</a>
+              <a href="{% url 'detalle_contactos' contacto.id %}" class="bg-blue-500 hover:scale-105 transition-all ease-in px-2 py-1 rounded">Ver Contactos</a>
+              <a href="{% url 'editar_contactos' contacto.id %}" class="bg-yellow-500 hover:scale-105 transition-all ease-in px-2 py-1 rounded">Editar contactos</a>
+              <a href="{% url 'eliminar_contactos' contacto.id %}" class="bg-red-500 hover:scale-105 transition-all ease-in px-2 py-1 rounded">Eliminar Contactos</a>
             </menu>
           </td>
         </tr>

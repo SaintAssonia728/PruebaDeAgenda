@@ -7,10 +7,12 @@
 {% block content %}
   <h1 class="text-2xl font-bold mb-4">Detalle del Contacto</h1>
   <div class="bg-white p-4 rounded shadow">
-    <h2 class="text-xl font-bold">{{ contacto.nombre }}</h2>
+    <h2 class="text-xl font-bold">{{ contactos.nombre }}</h2>
     <p class="mt-2">{{ contacto.correos }}</p>
-    <p class="mt-2">Teléfono: {{ contacto.telefonos }}</p>
-    <p class="mt-2">Dirección: {{ contacto.direccion }}</p>
+    <p class="mt-2">Nombre: {{ contactos.nombre }}</p>
+    <p class="mt-2">Correo: {{ contactos.correo }}</p>
+    <p class="mt-2">Teléfono: {{ contactos.telefono }}</p>
+    <p class="mt-2">Dirección: {{ contactos.direccion }}</p>
     <a href="{% url 'lista_contactos' %}" class="hover:scale-105 transition-all ease-in mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded">Volver a la lista</a>
   </div>
 {% endblock %}
