@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'lista',
+    'lista',  # Agregamos a la app lista para que reconozca modelos entre otros y reconozca las migraciones
 ]
 
 MIDDLEWARE = [
