@@ -8,3 +8,4 @@ urlpatterns = [
     path("contacto/eliminar/<int:id>/", views.eliminar_contactos, name="eliminar_contactos"),
     path("contacto/buscar/", views.buscar_contactos, name="buscar_contactos"),
 ]
+# Le cambiamos el nombre a la vista por el que vamos a llamar en este caso Contactos y le damos un nombre a la url para identificarla mejor en la carpeta templates
