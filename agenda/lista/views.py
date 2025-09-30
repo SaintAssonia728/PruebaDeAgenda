@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Contactos
-from .forms import ContactosForm
+from .forms import ContactosForm # Importamos los modelos y los formularios que vamos a usar en las vistas
 
 # Create your views here.
 
-def lista_contactos(request):
+def lista_contactos(request): 
     contactos = Contactos.objects.all()
     return render(request, 'lista/lista_contactos.html', {'contactos': contactos})
 
@@ -12,7 +12,7 @@ def detalle_contactos(request, id):
     contacto = get_object_or_404(Contactos, id=id)
     return render(request, 'lista/detalle_contactos.html', {'contactos': contacto})
 
-def nuevo_contactos(request):
+def nuevo_contactos(request): # Usamos el metodo Post 
     if request.method == 'POST':
         form = ContactosForm(request.POST)
         if form.is_valid():
