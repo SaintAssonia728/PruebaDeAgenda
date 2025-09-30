@@ -4,72 +4,39 @@ from .forms import ContactosForm # Importamos los modelos y los formularios que 
 
 # Create your views here.
 
-def lista_contactos(request): 
+def lista_contactos(request): # Creamos La vista de lista de contactos donde se podran mostrar todos los contactos que se han agregado a la agenda usaremos (return) para regresar una respuesta http y usaremos (render) para renderizar una plantilla 
     contactos = Contactos.objects.all()
     return render(request, 'lista/lista_contactos.html', {'contactos': contactos})
 
-def detalle_contactos(request, id):
+def detalle_contactos(request, id): # Creamos la vista de detalle de contactos donde se podran ver los detalles de cada contacto 
     contacto = get_object_or_404(Contactos, id=id)
     return render(request, 'lista/detalle_contactos.html', {'contactos': contacto})
 
-def nuevo_contactos(request): # Usamos el metodo Post 
+def nuevo_contactos(request): # Usamos el metodo Post para crear un nuevo contacto usando que creamos en (forms.py) lo usamos para crear un formulario basado en el modelo Contactos que creamos en (models.py)
     if request.method == 'POST':
         form = ContactosForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('lista_contactos')
+        if form.is_valid(): # Validamos que el formulario sea valido
+            form.save() # Guardamos el formulario
+            return redirect('lista_contactos') # Redirigimos a la vista de lista de contactos despues de guardar el formulario
     else:
         form = ContactosForm()
     return render(request, 'lista/nuevo_contactos.html', {'form': form})
 
-def editar_contactos(request, id):
+def editar_contactos(request, id): # Usamos el metodo Post para editar un contacto que ya existe 
     contacto = get_object_or_404(Contactos, id=id)
-    if request.method == 'POST':
+    if request.method == 'POST': 
         form = ContactosForm(request.POST, instance=contacto)
         if form.is_valid():
             form.save()
-            return redirect('lista_contactos')
+            return redirect('lista_contactos') # Denuevo lo validamos y lo guardamos y redirigimos a la vista de lista de contactos
     else:
-        form = ContactosForm(instance=contacto)
+        form = ContactosForm(instance=contacto) 
     return render(request, 'lista/editar_contactos.html', {'form': form})
 
-def eliminar_contactos(request, id):
+def eliminar_contactos(request, id): # Creamos la vista para eliminar un contacto usando el metodo Post
     contacto = get_object_or_404(Contactos, id=id)
     if request.method == 'POST':
-        contacto.delete()
+        contacto.delete() # Si el metodo es Post eliminamos el contacto y luego redirigimos a la vista de lista de contactos
         return redirect('lista_contactos')
     return render(request, 'lista/eliminar_contactos.html', {'contactos': contacto})
 
-
-def detalle_contactos(request, id):
-    contacto = get_object_or_404(Contactos, id=id)
-    return render(request, 'lista/detalle_contactos.html', {'contactos': contacto})
-
-def nuevo_contactos(request):
-    if request.method == 'POST':
-        form = ContactosForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('lista_contactos')
-    else:
-        form = ContactosForm()
-    return render(request, 'lista/nuevo_contactos.html', {'form': form})
-
-def editar_contactos(request, id):
-    contacto = get_object_or_404(Contactos, id=id)
-    if request.method == 'POST':
-        form = ContactosForm(request.POST, instance=contacto)
-        if form.is_valid():
-            form.save()
-            return redirect('lista_contactos')
-    else:
-        form = ContactosForm(instance=contacto)
-    return render(request, 'lista/editar_contactos.html', {'form': form})
-
-def eliminar_contactos(request, id):
-    contacto = get_object_or_404(Contactos, id=id)
-    if request.method == 'POST':
-        contacto.delete()
-        return redirect('lista_contactos')
-    return render(request, 'lista/eliminar_contactos.html', {'contactos': contacto})
- 

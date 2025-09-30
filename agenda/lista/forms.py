@@ -6,4 +6,5 @@ class ContactosForm(forms.ModelForm):
         model = Contactos
         fields = ['nombre', 'correo', 'telefono', 'direccion'] # Colocamos estos campos los cuales son los que solicita la agenda de contactos
         
-#Creamos un formulario basado en el modelo Contactos que creamos en (models.py) en model colocamos el modelo que vamos a usar y en fields colocamos los campos que queremos que se muestren en el formulario, en este caso todos los campos del modelo Contactos
+# Creamos un formulario basado en el modelo Contactos que creamos en (models.py) en model colocamos el modelo que vamos a usar y en fields colocamos los campos que queremos que se muestren en el formulario, en este caso todos los campos del modelo Contactos
+
