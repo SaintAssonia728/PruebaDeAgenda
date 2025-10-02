@@ -1,12 +1,17 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Contactos
+from django.db.models import Q # Importamos Q para poder hacer consultas las cuales la vamos a usar para hacer busquedas
 from .forms import ContactosForm # Importamos los modelos y los formularios que vamos a usar en las vistas
 
 # Create your views here.
 
 def lista_contactos(request): # Creamos La vista de lista de contactos donde se podran mostrar todos los contactos que se han agregado a la agenda usaremos (return) para regresar una respuesta http y usaremos (render) para renderizar una plantilla 
-    contactos = Contactos.objects.all()
-    return render(request, 'lista/lista_contactos.html', {'contactos': contactos})
+    query = request.GET.get('q', '')
+    if query:
+        contactos = Contactos.objects.filter(nombre__icontains=query)
+    else:
+        contactos = Contactos.objects.all()
+    return render(request, 'lista/lista_contactos.html', {'contactos': contactos, 'query': query})
 
 def detalle_contactos(request, id): # Creamos la vista de detalle de contactos donde se podran ver los detalles de cada contacto 
     contacto = get_object_or_404(Contactos, id=id)
@@ -39,4 +44,12 @@ def eliminar_contactos(request, id): # Creamos la vista para eliminar un contact
         contacto.delete() # Si el metodo es Post eliminamos el contacto y luego redirigimos a la vista de lista de contactos
         return redirect('lista_contactos')
     return render(request, 'lista/eliminar_contactos.html', {'contactos': contacto})
+
+def buscar_contactos(request): # Creamos la vista para buscar contactos solo por nombre
+    query = request.GET.get('q', '') # Obtenemos el valor del campo de busqueda (q) y quitamos espacios
+    resultados = []
+    if query:
+        resultados = Contactos.objects.filter(nombre__icontains=query)
+    # Si el campo está vacío, resultados será una lista vacía y no se mostrará nada
+    return render(request, 'lista/buscar_contactos.html', {'resultados': resultados, 'query': query})
 
