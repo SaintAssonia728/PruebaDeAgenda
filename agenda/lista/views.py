@@ -8,7 +8,7 @@ from .forms import ContactosForm # Importamos los modelos y los formularios que 
 def lista_contactos(request): # Creamos La vista de lista de contactos donde se podran mostrar todos los contactos que se han agregado a la agenda usaremos (return) para regresar una respuesta http y usaremos (render) para renderizar una plantilla 
     query = request.GET.get('q', '')
     if query:
-        contactos = Contactos.objects.filter(nombre__icontains=query)
+        contactos = Contactos.objects.filter(nombre__icontains=query) # Esto busca en la bas
     else:
         contactos = Contactos.objects.all()
     return render(request, 'lista/lista_contactos.html', {'contactos': contactos, 'query': query})
