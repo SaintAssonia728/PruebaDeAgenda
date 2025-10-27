@@ -1,12 +1,24 @@
 from django.db import models
+from django.core.validators import RegexValidator
 
 # Create your models here.
+class Etiqueta(models.Model): # Modelo para las etiquetas de los contactos
+    nombre = models.CharField(max_length=50, unique=True) # Usamos CharField para el nombre de la etiqueta, con un maximo de 50 caracteres y unico para evitar etiquetas duplicadas
+    
+    def __str__(self):
+        return self.nombre
+    
+telefono_validator = RegexValidator(
+    regex=r'^\+?\d{7,15}$',
+    message='Ingrese un teléfono válido (solo dígitos, opcional +, entre 7 y 15 dígitos).'
+)
 
 class Contactos(models.Model):
     nombre = models.CharField(max_length=100) 
-    correo = models.EmailField(unique=True) # Usamos EmailField para validar que el correo tenga un formato correcto y unico al usarlo genera mensajes automaticamenta por django el cual lo podemos cambiar al usar con (mensaje_error)
-    telefono = models.CharField(max_length=15)
+    correo = models.EmailField(unique=True) # Usamos EmailField para validar que el correo tenga un formato correcto y unico
+    telefono = models.CharField(max_length=20, validators=[telefono_validator])
     direccion = models.CharField(max_length=255)
+    etiquetas = models.ManyToManyField(Etiqueta, blank=True, related_name='contactos')
 
     def __str__(self):
         return self.nombre

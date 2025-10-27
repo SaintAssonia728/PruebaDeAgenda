@@ -2,16 +2,35 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Contactos
 from django.db.models import Q # Importamos Q para poder hacer consultas las cuales la vamos a usar para hacer busquedas
 from .forms import ContactosForm # Importamos los modelos y los formularios que vamos a usar en las vistas
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib import messages
 
 # Create your views here.
 
 def lista_contactos(request): # Creamos La vista de lista de contactos donde se podran mostrar todos los contactos que se han agregado a la agenda usaremos (return) para regresar una respuesta http y usaremos (render) para renderizar una plantilla 
     query = request.GET.get('q', '')
     if query:
-        contactos = Contactos.objects.filter(nombre__icontains=query) # Esto busca en la bas
+        contactos_qs = Contactos.objects.filter(nombre__icontains=query) # Esto busca en la base
     else:
-        contactos = Contactos.objects.all()
-    return render(request, 'lista/lista_contactos.html', {'contactos': contactos, 'query': query})
+        contactos_qs = Contactos.objects.all()
+
+    # Paginación: 10 contactos por página
+    paginator = Paginator(contactos_qs, 10)
+    page = request.GET.get('page')
+    try:
+        contactos = paginator.page(page)
+    except PageNotAnInteger:
+        contactos = paginator.page(1)
+    except EmptyPage:
+        contactos = paginator.page(paginator.num_pages)
+
+    context = {
+        'contactos': contactos,
+        'query': query,
+        'is_paginated': contactos.has_other_pages(),
+        'page_obj': contactos,
+    }
+    return render(request, 'lista/lista_contactos.html', context)
 
 def detalle_contactos(request, id): # Creamos la vista de detalle de contactos donde se podran ver los detalles de cada contacto 
     contacto = get_object_or_404(Contactos, id=id)
@@ -22,7 +41,10 @@ def nuevo_contactos(request): # Usamos el metodo Post para crear un nuevo contac
         form = ContactosForm(request.POST)
         if form.is_valid(): # Validamos que el formulario sea valido
             form.save() # Guardamos el formulario
+            messages.success(request, 'Contacto creado correctamente.')
             return redirect('lista_contactos') # Redirigimos a la vista de lista de contactos despues de guardar el formulario
+        else:
+            messages.error(request, 'Hubo errores en el formulario. Verifique los campos.')
     else:
         form = ContactosForm()
     return render(request, 'lista/nuevo_contactos.html', {'form': form})
@@ -33,7 +55,10 @@ def editar_contactos(request, id): # Usamos el metodo Post para editar un contac
         form = ContactosForm(request.POST, instance=contacto)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Contacto actualizado correctamente.')
             return redirect('lista_contactos') # Denuevo lo validamos y lo guardamos y redirigimos a la vista de lista de contactos
+        else:
+            messages.error(request, 'Hubo errores al actualizar el contacto. Revise los campos.')
     else:
         form = ContactosForm(instance=contacto) 
     return render(request, 'lista/editar_contactos.html', {'form': form})
@@ -42,6 +67,7 @@ def eliminar_contactos(request, id): # Creamos la vista para eliminar un contact
     contacto = get_object_or_404(Contactos, id=id)
     if request.method == 'POST':
         contacto.delete() # Si el metodo es Post eliminamos el contacto y luego redirigimos a la vista de lista de contactos
+        messages.success(request, 'Contacto eliminado correctamente.')
         return redirect('lista_contactos')
     return render(request, 'lista/eliminar_contactos.html', {'contactos': contacto})
 
