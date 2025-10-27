@@ -23,7 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Leer variables de entorno desde .env
 env = environ.Env(DEBUG=(bool, False))
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+try:
+    # Intentionally attempt to read .env if present; ignore if missing on the server
+    environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+except Exception:
+    pass
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY', default='dev-secret-key')
@@ -32,6 +36,17 @@ SECRET_KEY = env('SECRET_KEY', default='dev-secret-key')
 DEBUG = env.bool('DEBUG', default=True)
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1'])
+
+# If Render (or another host) provides an external hostname, allow it
+render_host = os.environ.get('RENDER_EXTERNAL_HOSTNAME') or os.environ.get('RENDER_SERVICE_ID')
+if render_host:
+    if render_host not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(render_host)
+
+# If running in production (DEBUG=False) and no hosts provided, allow all to avoid
+# immediate DisallowedHost during startup — tighten this for real production.
+if not DEBUG and (not ALLOWED_HOSTS or ALLOWED_HOSTS == ['']):
+    ALLOWED_HOSTS = ['*']
 
 
 # Application definition
