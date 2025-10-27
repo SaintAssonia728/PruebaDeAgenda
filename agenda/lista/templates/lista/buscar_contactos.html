@@ -3,7 +3,7 @@
 {% block content %}
 <h2>Buscar Contactos</h2>
 <form method="get" action="">
-	<input type="text" name="q" placeholder="Buscar por nombre o correo" value="{{ query|default:'' }}">
+	<input type="text" name="q" placeholder="Buscar por nombre" value="{{ query|default:'' }}">
 	<button type="submit">Buscar</button>
 </form>
 
@@ -19,7 +19,7 @@
 		{% endfor %}
 		</ul>
 	{% else %}
-		<p>No se encontraron contactos con ese nombre ni correo.</p>
+		<p>No se encontraron contactos con ese nombre.</p>
 	{% endif %}
 {% endif %}
 {% endblock %}

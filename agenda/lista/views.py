@@ -10,10 +10,7 @@ from django.contrib import messages
 def lista_contactos(request): # Creamos La vista de lista de contactos donde se podran mostrar todos los contactos que se han agregado a la agenda usaremos (return) para regresar una respuesta http y usaremos (render) para renderizar una plantilla 
     query = request.GET.get('q', '')
     if query:
-        # Buscar por nombre O por correo (insensible a mayúsculas)
-        contactos_qs = Contactos.objects.filter(
-            Q(nombre__icontains=query) | Q(correo__icontains=query)
-        )
+        contactos_qs = Contactos.objects.filter(nombre__icontains=query) # Esto busca en la base
     else:
         contactos_qs = Contactos.objects.all()
 
@@ -78,10 +75,7 @@ def buscar_contactos(request): # Creamos la vista para buscar contactos solo por
     query = request.GET.get('q', '') # Obtenemos el valor del campo de busqueda (q) y quitamos espacios
     resultados = []
     if query:
-        # Buscar por nombre o por correo
-        resultados = Contactos.objects.filter(
-            Q(nombre__icontains=query) | Q(correo__icontains=query)
-        )
+        resultados = Contactos.objects.filter(nombre__icontains=query)
     # Si el campo está vacío, resultados será una lista vacía y no se mostrará nada
     return render(request, 'lista/buscar_contactos.html', {'resultados': resultados, 'query': query})
 
