@@ -5,3 +5,4 @@ gunicorn
 psycopg[binary]
 psycopg2-binary
 asgiref==3.10.0
+python-dotenv
