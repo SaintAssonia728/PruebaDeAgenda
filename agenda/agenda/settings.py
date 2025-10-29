@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 import environ
-import psycopg2
 from dotenv import load_dotenv
 import os
 
