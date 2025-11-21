@@ -6,3 +6,5 @@ psycopg[binary]
 psycopg2-binary
 python-dotenv
 djangorestframework
+djangorestframework-simplejwt
+django-cors-headers
