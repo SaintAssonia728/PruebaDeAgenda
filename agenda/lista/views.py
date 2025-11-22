@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Contactos
+from django.http import JsonResponse
 from django.db.models import Q # Importamos Q para poder hacer consultas las cuales la vamos a usar para hacer busquedas
 from .forms import ContactosForm # Importamos los modelos y los formularios que vamos a usar en las vistas
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -8,6 +9,15 @@ from django.contrib import messages
 from django.contrib.auth.models import Group, User
 from rest_framework import permissions, viewsets
 from .serializers import GroupSerializer, UserSerializer, ContactosSerializer
+
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def custom_endpoint(request):
+    return JsonResponse({
+        "secretos": "El peruano es Gey"
+    })
+
 
 class ContactosViewSet(viewsets.ModelViewSet):
     queryset = Contactos.objects.all().order_by("nombre")
