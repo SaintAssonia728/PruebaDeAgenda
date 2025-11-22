@@ -11,6 +11,7 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path("api/", include(router.urls)),
+    path("api/secreto/", views.custom_endpoint), # Es de ejemplo para un endpoint protegido que requiere autenticacion 
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     path("", views.lista_contactos, name="lista_contactos"), # Esta es la ruta principal, que muestra la lista de contactos
     path("contacto/<int:id>/", views.detalle_contactos, name="detalle_contactos"), # Esta ruta muestra el detalle de un contacto, muestra el Nombre, Correo, Telefono y Descripcion
