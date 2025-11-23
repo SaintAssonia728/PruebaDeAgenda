@@ -52,8 +52,9 @@ if render_host:
 if not DEBUG and (not ALLOWED_HOSTS or ALLOWED_HOSTS == ['']):
     ALLOWED_HOSTS = ['*']
 
-CORS_ALLOW_ALL_ORIGINS = True  # Permitir en todos lados
-
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8000',  #Este es el puerto de mi proyecto backend
+]
 # Application definition
 
 INSTALLED_APPS = [
