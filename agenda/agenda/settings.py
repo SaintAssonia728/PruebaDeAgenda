@@ -52,9 +52,7 @@ if render_host:
 if not DEBUG and (not ALLOWED_HOSTS or ALLOWED_HOSTS == ['']):
     ALLOWED_HOSTS = ['*']
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8000',  #Este es el puerto de mi proyecto backend
-]
+CORS_ALLOW_ALL_ORIGINS = True 
 # Application definition
 
 INSTALLED_APPS = [
@@ -87,16 +85,16 @@ SIMPLE_JWT = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Mantén solo una instancia
     'django.contrib.sessions.middleware.SessionMiddleware',
-    "corsheaders.middleware.CorsMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "corsheaders.middleware.CorsMiddleware",  # CorsMiddleware debe estar antes de los middlewares que gestionan las cabeceras
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'agenda.urls'
 
