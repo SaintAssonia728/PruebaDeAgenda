@@ -15,7 +15,7 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def custom_endpoint(request):
     return JsonResponse({
-        "secretos": "El peruano es Gey"
+        "secretos": "secretos solo para usuarios autenticados"
     })
 
 
