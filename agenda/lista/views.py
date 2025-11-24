@@ -10,14 +10,6 @@ from django.contrib.auth.models import Group, User
 from rest_framework import permissions, viewsets
 from .serializers import GroupSerializer, UserSerializer, ContactosSerializer
 
-# Es de ejemplo para un endpoint protegido que requiere autenticacion
-from django.contrib.auth.decorators import login_required
-@login_required
-def custom_endpoint(request):
-    return JsonResponse({
-        "secretos": "El peruano es Gey"
-    })
-
 
 class ContactosViewSet(viewsets.ModelViewSet):
     queryset = Contactos.objects.all().order_by("nombre")
