@@ -1,5 +1,6 @@
 from django import forms # Importamos desde django los formularios para crear formularios basados en los modelos que vamos a usar
 from .models import Contactos # Importamos el modelo Contactos que creamos en (models.py) para usarlo en el formulario
+import re
 
 class ContactosForm(forms.ModelForm):
     class Meta:
@@ -19,10 +20,18 @@ class ContactosForm(forms.ModelForm):
         correo = self.cleaned_data['correo'].strip().lower() # Limpiamos espacios en blanco al inicio y al final y convertimos a minusculas
         return correo
 
-    def clean_telefono(self): # Metodo para limpiar y validar el campo telefono
-        telefono = self.cleaned_data['telefono'].strip() # Limpiamos espacios en blanco al inicio y al final
-        telefono = telefono.replace(' ', '').replace('-', '')# Eliminamos espacios y guiones
-        return telefono 
+    def clean_telefono(self):
+        telefono = self.cleaned_data.get('telefono', '')
+        if telefono is None:
+            return telefono
+        telefono = telefono.strip()
+        telefono = re.sub(r'[\s\-]', '', telefono)
+        if not re.match(r'^\+569\d{8}$', telefono):
+            raise forms.ValidationError(
+                "El teléfono debe tener formato +569 y 8 dígitos (ej: +56912345678)."
+            )
+
+        return telefono
 
 # Creamos un formulario basado en el modelo Contactos que creamos en (models.py) en model colocamos el modelo que vamos a usar y en fields colocamos los campos que queremos que se muestren en el formulario, en este caso todos los campos del modelo Contactos
 

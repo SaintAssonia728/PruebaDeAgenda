@@ -14,10 +14,10 @@ telefono_validator = RegexValidator(
 )
 
 class Contactos(models.Model):
-    nombre = models.CharField(max_length=100) 
-    correo = models.EmailField(unique=True) # Usamos EmailField para validar que el correo tenga un formato correcto y unico
-    telefono = models.CharField(max_length=20, validators=[telefono_validator])
-    direccion = models.CharField(max_length=255)
+    nombre = models.CharField(max_length=50) 
+    correo = models.EmailField(unique=True, max_length=50) # Usamos EmailField para validar que el correo tenga un formato correcto y unico
+    telefono = models.CharField(max_length=12, validators=[telefono_validator],unique=True)
+    direccion = models.CharField(max_length=100)
     etiquetas = models.ManyToManyField(Etiqueta, blank=True, related_name='contactos')
 
     def __str__(self):
