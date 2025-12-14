@@ -113,4 +113,3 @@ def buscar_contactos(request): # Creamos la vista para buscar contactos solo por
         resultados = Contactos.objects.filter(nombre__icontains=query)
     # Si el campo está vacío, resultados será una lista vacía y no se mostrará nada
     return render(request, 'lista/buscar_contactos.html', {'resultados': resultados, 'query': query})
-

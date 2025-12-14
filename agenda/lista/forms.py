@@ -35,4 +35,3 @@ class ContactosForm(forms.ModelForm):
 
 # Creamos un formulario basado en el modelo Contactos que creamos en (models.py) en model colocamos el modelo que vamos a usar y en fields colocamos los campos que queremos que se muestren en el formulario, en este caso todos los campos del modelo Contactos
 
-
